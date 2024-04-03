@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: student-service-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  student-service-app
+  template:
+    metadata:
+      labels:
+        app: student-service-app
+    spec:
+      containers:
+      - name: student-service-app
+        image: aebh102/student-service:0.0.1
+        imagePullPolicy:  Always
+        ports:
+        - containerPort:  9002
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name:  student-service-svc
+spec:
+  selector:
+    app:  student-service-app
+  type:  ClusterIP
+  ports:
+  - port:  80
+    targetPort:  9002
